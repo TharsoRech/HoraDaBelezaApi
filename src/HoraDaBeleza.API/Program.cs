@@ -1,6 +1,7 @@
+using System.Reflection;
 using System.Text;
-using HoraDaBeleza.Application;
 using HoraDaBeleza.API.Middleware;
+using HoraDaBeleza.Application;
 using HoraDaBeleza.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -38,44 +39,72 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-// ── Controllers ────────────────────────────────────────────────────────────
+// ── Controllers com suporte a XML comments ────────────────────────────────
 builder.Services.AddControllers();
 
 // ── Swagger / OpenAPI ──────────────────────────────────────────────────────
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
+    options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title       = "Hora da Beleza API",
+        Title       = "💈 Hora da Beleza API",
         Version     = "v1",
-        Description = "Backend do aplicativo Hora da Beleza — agendamentos de serviços de beleza."
-    });
-
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name         = "Authorization",
-        Type         = SecuritySchemeType.ApiKey,
-        Scheme       = "Bearer",
-        BearerFormat = "JWT",
-        In           = ParameterLocation.Header,
-        Description  = "Informe: Bearer {seu_token}"
-    });
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
+        Description = """
+            API REST do aplicativo **Hora da Beleza** — plataforma de agendamento de serviços de beleza.
+            
+            ## Autenticação
+            1. Use `POST /api/auth/registrar` para criar sua conta.
+            2. Use `POST /api/auth/login` para obter o token JWT.
+            3. Clique em **Authorize** 🔒 e informe: `Bearer {seu_token}`.
+            
+            ## Tipos de usuário
+            | Tipo | Permissões |
+            |------|-----------|
+            | `Cliente` | Agendar, avaliar, ver histórico |
+            | `Profissional` | Gerenciar agenda, confirmar/concluir |
+            | `Proprietario` | Gerenciar salão, serviços e profissionais |
+            | `Admin` | Acesso total |
+            """,
+        Contact = new OpenApiContact
         {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id   = "Bearer"
-                }
-            },
-            Array.Empty<string>()
+            Name = "Tharso Rech",
+            Url  = new Uri("https://github.com/TharsoRech/HoraDaBelezaApi")
         }
     });
+
+    // ── Botão Authorize com suporte a Bearer ──────────────────────────────
+    var securityScheme = new OpenApiSecurityScheme
+    {
+        Name         = "Authorization",
+        Description  = "Informe o token JWT no formato: **Bearer {token}**",
+        In           = ParameterLocation.Header,
+        Type         = SecuritySchemeType.Http,
+        Scheme       = "bearer",
+        BearerFormat = "JWT",
+        Reference = new OpenApiReference
+        {
+            Id   = JwtBearerDefaults.AuthenticationScheme,
+            Type = ReferenceType.SecurityScheme
+        }
+    };
+
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { securityScheme, Array.Empty<string>() }
+    });
+
+    // ── XML Comments (descrições dos endpoints) ───────────────────────────
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    if (File.Exists(xmlPath))
+        options.IncludeXmlComments(xmlPath);
+
+    // ── Ordenar endpoints por área/tag ────────────────────────────────────
+    options.TagActionsBy(api => new[] { api.GroupName ?? api.ActionDescriptor.RouteValues["controller"] });
+    options.DocInclusionPredicate((_, _) => true);
 });
 
 // ── CORS ───────────────────────────────────────────────────────────────────
@@ -90,15 +119,18 @@ var app = builder.Build();
 // ── Middleware Pipeline ────────────────────────────────────────────────────
 app.UseMiddleware<ExceptionMiddleware>();
 
-if (app.Environment.IsDevelopment())
+// Swagger disponível em todos os ambientes (ajuste se quiser só em Dev)
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hora da Beleza API v1");
-        c.RoutePrefix = string.Empty; // Swagger na raiz
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hora da Beleza API v1");
+    c.RoutePrefix      = string.Empty;        // Swagger na raiz: http://localhost:5000
+    c.DocumentTitle    = "💈 Hora da Beleza API";
+    c.DefaultModelsExpandDepth(-1);           // Esconde schemas por padrão (UI mais limpa)
+    c.DisplayRequestDuration();               // Mostra tempo de resposta
+    c.EnableFilter();                         // Caixa de busca de endpoints
+    c.EnableDeepLinking();                    // URLs navegáveis por endpoint
+});
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
