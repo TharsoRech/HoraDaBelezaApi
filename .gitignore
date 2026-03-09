@@ -1,0 +1,8 @@
+/src/HoraDaBeleza.API/bin/
+/src/HoraDaBeleza.Infrastructure/bin/
+/src/HoraDaBeleza.Domain/bin/
+/src/HoraDaBeleza.Domain/obj/
+/src/HoraDaBeleza.API/obj/
+/src/HoraDaBeleza.Infrastructure/obj/
+/src/HoraDaBeleza.Application/bin/
+/src/HoraDaBeleza.Application/obj/
