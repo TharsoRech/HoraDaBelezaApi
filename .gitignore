@@ -6,3 +6,8 @@
 /src/HoraDaBeleza.Infrastructure/obj/
 /src/HoraDaBeleza.Application/bin/
 /src/HoraDaBeleza.Application/obj/
+bin/
+obj/
+*.user
+.vs/
+.idea/
