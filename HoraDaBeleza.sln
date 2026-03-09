@@ -1,0 +1,28 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoraDaBeleza.API", "src\HoraDaBeleza.API\HoraDaBeleza.API.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567891}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoraDaBeleza.Application", "src\HoraDaBeleza.Application\HoraDaBeleza.Application.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567892}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoraDaBeleza.Domain", "src\HoraDaBeleza.Domain\HoraDaBeleza.Domain.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567893}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoraDaBeleza.Infrastructure", "src\HoraDaBeleza.Infrastructure\HoraDaBeleza.Infrastructure.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567894}"
+EndProject
+Global
+    GlobalSection(SolutionConfigurationPlatforms) = preSolution
+        Debug|Any CPU = Debug|Any CPU
+        Release|Any CPU = Release|Any CPU
+    EndGlobalSection
+    GlobalSection(ProjectConfigurationPlatforms) = postSolution
+        {A1B2C3D4-E5F6-7890-ABCD-EF1234567891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {A1B2C3D4-E5F6-7890-ABCD-EF1234567891}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {A1B2C3D4-E5F6-7890-ABCD-EF1234567892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {A1B2C3D4-E5F6-7890-ABCD-EF1234567892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {A1B2C3D4-E5F6-7890-ABCD-EF1234567893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {A1B2C3D4-E5F6-7890-ABCD-EF1234567893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {A1B2C3D4-E5F6-7890-ABCD-EF1234567894}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {A1B2C3D4-E5F6-7890-ABCD-EF1234567894}.Debug|Any CPU.Build.0 = Debug|Any CPU
+    EndGlobalSection
+EndGlobal

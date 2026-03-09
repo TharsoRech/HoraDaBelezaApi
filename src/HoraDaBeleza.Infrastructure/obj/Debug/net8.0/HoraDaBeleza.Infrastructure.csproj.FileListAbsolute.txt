@@ -1,0 +1,17 @@
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/bin/Debug/net8.0/HoraDaBeleza.Infrastructure.deps.json
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/bin/Debug/net8.0/HoraDaBeleza.Infrastructure.dll
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/bin/Debug/net8.0/HoraDaBeleza.Infrastructure.pdb
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/bin/Debug/net8.0/HoraDaBeleza.Application.dll
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/bin/Debug/net8.0/HoraDaBeleza.Domain.dll
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/bin/Debug/net8.0/HoraDaBeleza.Application.pdb
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/bin/Debug/net8.0/HoraDaBeleza.Domain.pdb
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/obj/Debug/net8.0/HoraDaBeleza.Infrastructure.csproj.AssemblyReference.cache
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/obj/Debug/net8.0/HoraDaBeleza.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/obj/Debug/net8.0/HoraDaBeleza.Infrastructure.AssemblyInfoInputs.cache
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/obj/Debug/net8.0/HoraDaBeleza.Infrastructure.AssemblyInfo.cs
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/obj/Debug/net8.0/HoraDaBeleza.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/obj/Debug/net8.0/HoraDaBe.E98033BB.Up2Date
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/obj/Debug/net8.0/HoraDaBeleza.Infrastructure.dll
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/obj/Debug/net8.0/refint/HoraDaBeleza.Infrastructure.dll
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/obj/Debug/net8.0/HoraDaBeleza.Infrastructure.pdb
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Infrastructure/obj/Debug/net8.0/ref/HoraDaBeleza.Infrastructure.dll

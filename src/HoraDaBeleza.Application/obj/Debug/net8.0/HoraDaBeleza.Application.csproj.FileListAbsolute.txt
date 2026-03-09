@@ -1,0 +1,15 @@
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/bin/Debug/net8.0/HoraDaBeleza.Application.deps.json
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/bin/Debug/net8.0/HoraDaBeleza.Application.dll
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/bin/Debug/net8.0/HoraDaBeleza.Application.pdb
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/bin/Debug/net8.0/HoraDaBeleza.Domain.dll
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/bin/Debug/net8.0/HoraDaBeleza.Domain.pdb
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/obj/Debug/net8.0/HoraDaBeleza.Application.csproj.AssemblyReference.cache
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/obj/Debug/net8.0/HoraDaBeleza.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/obj/Debug/net8.0/HoraDaBeleza.Application.AssemblyInfoInputs.cache
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/obj/Debug/net8.0/HoraDaBeleza.Application.AssemblyInfo.cs
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/obj/Debug/net8.0/HoraDaBeleza.Application.csproj.CoreCompileInputs.cache
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/obj/Debug/net8.0/HoraDaBe.6D56CB5F.Up2Date
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/obj/Debug/net8.0/HoraDaBeleza.Application.dll
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/obj/Debug/net8.0/refint/HoraDaBeleza.Application.dll
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/obj/Debug/net8.0/HoraDaBeleza.Application.pdb
+/Users/tharsofranciscorechcuria/Downloads/HoraDaBeleza/src/HoraDaBeleza.Application/obj/Debug/net8.0/ref/HoraDaBeleza.Application.dll

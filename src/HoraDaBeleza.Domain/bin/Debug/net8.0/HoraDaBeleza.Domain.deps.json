@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "HoraDaBeleza.Domain/1.0.0": {
+        "runtime": {
+          "HoraDaBeleza.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HoraDaBeleza.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
