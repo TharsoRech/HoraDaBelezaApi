@@ -1,4 +1,4 @@
-using HoraDaBeleza.Application.Commands.Reviews;
+using HoraDaBeleza.Application.Commands.Review.CreateReviewCommand;
 using HoraDaBeleza.Application.DTOs;
 using HoraDaBeleza.Application.Queries.ListSalonReviewsQuery;
 using MediatR;
@@ -11,10 +11,8 @@ namespace HoraDaBeleza.API.Controllers;
 [Route("api/reviews")]
 [Tags("Reviews")]
 [Produces("application/json")]
-public class ReviewsController : ApiController
+public class ReviewsController(IMediator mediator) : ApiController
 {
-    private readonly IMediator _mediator;
-    public ReviewsController(IMediator mediator) => _mediator = mediator;
 
     /// <summary>List reviews for a salon (public)</summary>
     /// <param name="salonId">Salon ID</param>
@@ -22,7 +20,7 @@ public class ReviewsController : ApiController
     [AllowAnonymous]
     [ProducesResponseType(typeof(IEnumerable<ReviewDto>), 200)]
     public async Task<IActionResult> BySalon(int salonId)
-        => Ok(await _mediator.Send(new ListSalonReviewsQuery(salonId)));
+        => Ok(await mediator.Send(new ListSalonReviewsQuery(salonId)));
 
     /// <summary>Submit a review for a completed appointment</summary>
     /// <remarks>
@@ -39,7 +37,7 @@ public class ReviewsController : ApiController
     [ProducesResponseType(422)]
     public async Task<IActionResult> Create([FromBody] CreateReviewRequest request)
     {
-        var result = await _mediator.Send(
+        var result = await mediator.Send(
             new CreateReviewCommand(request.AppointmentId, UserId, request.Rating, request.Comment));
         return Created("", result);
     }

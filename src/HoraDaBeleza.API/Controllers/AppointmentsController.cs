@@ -1,4 +1,6 @@
 using HoraDaBeleza.Application.Commands.Appointments;
+using HoraDaBeleza.Application.Commands.Appointments.CancelAppointmentCommand;
+using HoraDaBeleza.Application.Commands.Appointments.UpdateAppointmentStatusCommand;
 using HoraDaBeleza.Application.DTOs;
 using HoraDaBeleza.Application.Queries.ListClientAppointmentsQuery;
 using HoraDaBeleza.Application.Queries.ListProfessionalAppointmentsQuery;

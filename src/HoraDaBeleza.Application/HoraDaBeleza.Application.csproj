@@ -15,4 +15,12 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
     <PackageReference Include="BCrypt.Net-Next"                                Version="4.0.3"  />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\Professional\" />
+    <Folder Include="Commands\Review\" />
+    <Folder Include="Commands\Service\" />
+    <Folder Include="Commands\Subscription\" />
+    <Folder Include="Commands\Users\" />
+  </ItemGroup>
 </Project>

@@ -1,4 +1,7 @@
 using HoraDaBeleza.Application.Commands.Users;
+using HoraDaBeleza.Application.Commands.Users.LoginCommand;
+using HoraDaBeleza.Application.Commands.Users.RegisterUserCommand;
+using HoraDaBeleza.Application.Commands.Users.UpdateProfileCommand;
 using HoraDaBeleza.Application.DTOs;
 using HoraDaBeleza.Application.Queries.GetProfileQuery;
 using MediatR;

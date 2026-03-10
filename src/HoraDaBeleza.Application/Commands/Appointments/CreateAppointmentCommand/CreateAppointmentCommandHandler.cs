@@ -1,0 +1,85 @@
+using HoraDaBeleza.Application.DTOs;
+using HoraDaBeleza.Application.Interfaces;
+using HoraDaBeleza.Domain.Entities;
+using HoraDaBeleza.Domain.Enums;
+using HoraDaBeleza.Domain.Exceptions;
+using MediatR;
+
+namespace HoraDaBeleza.Application.Commands.Appointments;
+
+public class CreateAppointmentCommandHandler : IRequestHandler<CreateAppointmentCommand, AppointmentDto>
+{
+    private readonly IAppointmentRepository  _appointmentRepo;
+    private readonly IServiceRepository      _serviceRepo;
+    private readonly IProfessionalRepository _professionalRepo;
+    private readonly ISalonRepository        _salonRepo;
+    private readonly IUserRepository         _userRepo;
+    private readonly INotificationRepository _notificationRepo;
+
+    public CreateAppointmentCommandHandler(
+        IAppointmentRepository appointmentRepo, IServiceRepository serviceRepo,
+        IProfessionalRepository professionalRepo, ISalonRepository salonRepo,
+        IUserRepository userRepo, INotificationRepository notificationRepo)
+    {
+        _appointmentRepo  = appointmentRepo;
+        _serviceRepo      = serviceRepo;
+        _professionalRepo = professionalRepo;
+        _salonRepo        = salonRepo;
+        _userRepo         = userRepo;
+        _notificationRepo = notificationRepo;
+    }
+
+    public async Task<AppointmentDto> Handle(CreateAppointmentCommand req, CancellationToken ct)
+    {
+        var service = await _serviceRepo.GetByIdAsync(req.ServiceId)
+            ?? throw new NotFoundException("Service", req.ServiceId);
+
+        if (!service.Active)
+            throw new BusinessException("This service is currently unavailable.");
+
+        var professional = await _professionalRepo.GetByIdAsync(req.ProfessionalId)
+            ?? throw new NotFoundException("Professional", req.ProfessionalId);
+
+        if (professional.SalonId != req.SalonId)
+            throw new BusinessException("Professional does not belong to this salon.");
+
+        if (await _appointmentRepo.HasConflictAsync(req.ProfessionalId, req.ScheduledAt, service.DurationMinutes))
+            throw new BusinessException("This time slot is unavailable. Please choose another time.");
+
+        var appointment = new Appointment
+        {
+            ClientId        = req.ClientId,
+            ProfessionalId  = req.ProfessionalId,
+            ServiceId       = req.ServiceId,
+            SalonId         = req.SalonId,
+            ScheduledAt     = req.ScheduledAt,
+            DurationMinutes = service.DurationMinutes,
+            TotalPrice      = service.Price,
+            Status          = AppointmentStatus.Pending,
+            Notes           = req.Notes
+        };
+
+        var id       = await _appointmentRepo.CreateAsync(appointment);
+        var salon    = await _salonRepo.GetByIdAsync(req.SalonId);
+        var client   = await _userRepo.GetByIdAsync(req.ClientId);
+        var profUser = await _userRepo.GetByIdAsync(professional.UserId);
+
+        if (profUser != null && client != null)
+        {
+            await _notificationRepo.CreateAsync(new Notification
+            {
+                UserId      = profUser.Id,
+                Title       = "New appointment",
+                Message     = $"{client.Name} booked {service.Name} for {req.ScheduledAt:MM/dd/yyyy HH:mm}.",
+                Type        = NotificationType.AppointmentConfirmed,
+                ReferenceId = id
+            });
+        }
+
+        return new AppointmentDto(id, req.ClientId, client?.Name ?? "",
+            req.ProfessionalId, profUser?.Name ?? "",
+            req.ServiceId, service.Name, req.SalonId, salon?.Name ?? "",
+            req.ScheduledAt, service.DurationMinutes, service.Price,
+            AppointmentStatus.Pending, req.Notes, DateTime.UtcNow);
+    }
+}

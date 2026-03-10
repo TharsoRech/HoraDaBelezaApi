@@ -1,4 +1,6 @@
-using HoraDaBeleza.Application.Commands.Services;
+using HoraDaBeleza.Application.Commands.Service.CreateServiceCommand;
+using HoraDaBeleza.Application.Commands.Service.DeleteServiceCommand;
+using HoraDaBeleza.Application.Commands.Service.UpdateServiceCommand;
 using HoraDaBeleza.Application.DTOs;
 using HoraDaBeleza.Application.Queries.ListServicesQuery;
 using MediatR;

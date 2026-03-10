@@ -1,4 +1,4 @@
-using HoraDaBeleza.Application.Commands.Subscriptions;
+using HoraDaBeleza.Application.Commands.Subscription.CreateSubscriptionCommand;
 using HoraDaBeleza.Application.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
