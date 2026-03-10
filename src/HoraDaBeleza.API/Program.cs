@@ -97,7 +97,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hora da Beleza API v1");
-    c.RoutePrefix            = string.Empty;   // Swagger at http://localhost:5000
+    c.RoutePrefix = "swagger";   // Swagger at http://localhost:5000
     c.EnableFilter();
     c.EnableDeepLinking();
     c.DocumentTitle          = "Hora da Beleza API";
