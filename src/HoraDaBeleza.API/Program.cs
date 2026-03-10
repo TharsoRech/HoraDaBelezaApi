@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Text;
 using HoraDaBeleza.API.Middleware;
 using HoraDaBeleza.Application;
@@ -9,131 +8,103 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Application + Infrastructure ──────────────────────────────────────────
+// ── Controllers ────────────────────────────────────────────────────────────
+builder.Services.AddControllers();
+
+// ── Application & Infrastructure ──────────────────────────────────────────
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 
-// ── JWT Authentication ─────────────────────────────────────────────────────
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
+// ── JWT ────────────────────────────────────────────────────────────────────
+var jwt = builder.Configuration.GetSection("Jwt");
+var key = Encoding.UTF8.GetBytes(jwt["Key"]!);
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(o =>
     {
-        ValidateIssuer           = true,
-        ValidateAudience         = true,
-        ValidateLifetime         = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer              = jwtSettings["Issuer"],
-        ValidAudience            = jwtSettings["Audience"],
-        IssuerSigningKey         = new SymmetricSecurityKey(key),
-        ClockSkew                = TimeSpan.Zero
-    };
-});
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer           = true,
+            ValidateAudience         = true,
+            ValidateLifetime         = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer              = jwt["Issuer"],
+            ValidAudience            = jwt["Audience"],
+            IssuerSigningKey         = new SymmetricSecurityKey(key)
+        };
+    });
 
 builder.Services.AddAuthorization();
 
-// ── Controllers com suporte a XML comments ────────────────────────────────
-builder.Services.AddControllers();
-
-// ── Swagger / OpenAPI ──────────────────────────────────────────────────────
+// ── Swagger ────────────────────────────────────────────────────────────────
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+builder.Services.AddSwaggerGen(c =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title       = "💈 Hora da Beleza API",
+        Title       = "Hora da Beleza API",
         Version     = "v1",
         Description = """
-            API REST do aplicativo **Hora da Beleza** — plataforma de agendamento de serviços de beleza.
-            
-            ## Autenticação
-            1. Use `POST /api/auth/registrar` para criar sua conta.
-            2. Use `POST /api/auth/login` para obter o token JWT.
-            3. Clique em **Authorize** 🔒 e informe: `Bearer {seu_token}`.
-            
-            ## Tipos de usuário
-            | Tipo | Permissões |
-            |------|-----------|
-            | `Cliente` | Agendar, avaliar, ver histórico |
-            | `Profissional` | Gerenciar agenda, confirmar/concluir |
-            | `Proprietario` | Gerenciar salão, serviços e profissionais |
-            | `Admin` | Acesso total |
-            """,
-        Contact = new OpenApiContact
-        {
-            Name = "Tharso Rech",
-            Url  = new Uri("https://github.com/TharsoRech/HoraDaBelezaApi")
-        }
+            REST API for the **Hora da Beleza** beauty salon SaaS platform.
+
+            ## User Types
+            | Value | Type         | Permissions                           |
+            |-------|--------------|---------------------------------------|
+            | 1     | Client       | Book appointments, submit reviews     |
+            | 2     | Professional | Manage schedule, update status        |
+            | 3     | Owner        | Manage salon, services, professionals |
+            | 4     | Admin        | Full access                           |
+
+            ## Authentication
+            1. `POST /api/auth/login` — get your token
+            2. Click **Authorize 🔒** and enter: `Bearer {token}`
+            """
     });
 
-    // ── Botão Authorize com suporte a Bearer ──────────────────────────────
-    var securityScheme = new OpenApiSecurityScheme
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name         = "Authorization",
-        Description  = "Informe o token JWT no formato: **Bearer {token}**",
-        In           = ParameterLocation.Header,
-        Type         = SecuritySchemeType.Http,
-        Scheme       = "bearer",
+        Type         = SecuritySchemeType.ApiKey,
+        Scheme       = "Bearer",
         BearerFormat = "JWT",
-        Reference = new OpenApiReference
-        {
-            Id   = JwtBearerDefaults.AuthenticationScheme,
-            Type = ReferenceType.SecurityScheme
-        }
-    };
-
-    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
-
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        { securityScheme, Array.Empty<string>() }
+        In           = ParameterLocation.Header,
+        Description  = "Enter: **Bearer {your token}**"
     });
 
-    // ── XML Comments (descrições dos endpoints) ───────────────────────────
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    if (File.Exists(xmlPath))
-        options.IncludeXmlComments(xmlPath);
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {{
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+        },
+        Array.Empty<string>()
+    }});
 
-    // ── Ordenar endpoints por área/tag ────────────────────────────────────
-    options.TagActionsBy(api => new[] { api.GroupName ?? api.ActionDescriptor.RouteValues["controller"] });
-    options.DocInclusionPredicate((_, _) => true);
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    if (File.Exists(xmlPath)) c.IncludeXmlComments(xmlPath);
 });
 
 // ── CORS ───────────────────────────────────────────────────────────────────
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-});
+builder.Services.AddCors(o =>
+    o.AddDefaultPolicy(p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
 var app = builder.Build();
 
-// ── Middleware Pipeline ────────────────────────────────────────────────────
+// ── Pipeline ───────────────────────────────────────────────────────────────
 app.UseMiddleware<ExceptionMiddleware>();
-
-// Swagger disponível em todos os ambientes (ajuste se quiser só em Dev)
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hora da Beleza API v1");
-    c.RoutePrefix      = string.Empty;        // Swagger na raiz: http://localhost:5000
-    c.DocumentTitle    = "💈 Hora da Beleza API";
-    c.DefaultModelsExpandDepth(-1);           // Esconde schemas por padrão (UI mais limpa)
-    c.DisplayRequestDuration();               // Mostra tempo de resposta
-    c.EnableFilter();                         // Caixa de busca de endpoints
-    c.EnableDeepLinking();                    // URLs navegáveis por endpoint
+    c.RoutePrefix            = string.Empty;   // Swagger at http://localhost:5000
+    c.EnableFilter();
+    c.EnableDeepLinking();
+    c.DocumentTitle          = "Hora da Beleza API";
 });
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAll");
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

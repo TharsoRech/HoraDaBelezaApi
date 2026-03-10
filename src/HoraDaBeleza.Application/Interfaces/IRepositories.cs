@@ -1,91 +1,92 @@
 using HoraDaBeleza.Domain.Entities;
+using HoraDaBeleza.Domain.Enums;
 
 namespace HoraDaBeleza.Application.Interfaces;
 
-public interface IUsuarioRepository
+public interface IUserRepository
 {
-    Task<Usuario?> ObterPorIdAsync(int id);
-    Task<Usuario?> ObterPorEmailAsync(string email);
-    Task<int> CriarAsync(Usuario usuario);
-    Task AtualizarAsync(Usuario usuario);
-    Task<bool> ExisteEmailAsync(string email, int? ignorarId = null);
+    Task<User?> GetByIdAsync(int id);
+    Task<User?> GetByEmailAsync(string email);
+    Task<int> CreateAsync(User user);
+    Task UpdateAsync(User user);
+    Task<bool> EmailExistsAsync(string email, int? ignoreId = null);
 }
 
-public interface ISalaoRepository
+public interface ISalonRepository
 {
-    Task<Salao?> ObterPorIdAsync(int id);
-    Task<IEnumerable<Salao>> ListarAsync(string? cidade = null, string? busca = null);
-    Task<IEnumerable<Salao>> ListarPorProprietarioAsync(int proprietarioId);
-    Task<int> CriarAsync(Salao salao);
-    Task AtualizarAsync(Salao salao);
-    Task DeletarAsync(int id);
+    Task<Salon?> GetByIdAsync(int id);
+    Task<IEnumerable<Salon>> ListAsync(string? city = null, string? search = null);
+    Task<IEnumerable<Salon>> ListByOwnerAsync(int ownerId);
+    Task<int> CreateAsync(Salon salon);
+    Task UpdateAsync(Salon salon);
+    Task DeleteAsync(int id);
 }
 
-public interface IProfissionalRepository
+public interface IProfessionalRepository
 {
-    Task<Profissional?> ObterPorIdAsync(int id);
-    Task<IEnumerable<Profissional>> ListarPorSalaoAsync(int salaoId);
-    Task<int> CriarAsync(Profissional profissional);
-    Task AtualizarAsync(Profissional profissional);
-    Task DeletarAsync(int id);
+    Task<Professional?> GetByIdAsync(int id);
+    Task<IEnumerable<Professional>> ListBySalonAsync(int salonId);
+    Task<int> CreateAsync(Professional professional);
+    Task UpdateAsync(Professional professional);
+    Task DeleteAsync(int id);
 }
 
-public interface IServicoRepository
+public interface IServiceRepository
 {
-    Task<Servico?> ObterPorIdAsync(int id);
-    Task<IEnumerable<Servico>> ListarPorSalaoAsync(int salaoId, int? categoriaId = null);
-    Task<int> CriarAsync(Servico servico);
-    Task AtualizarAsync(Servico servico);
-    Task DeletarAsync(int id);
+    Task<Service?> GetByIdAsync(int id);
+    Task<IEnumerable<Service>> ListBySalonAsync(int salonId, int? categoryId = null);
+    Task<int> CreateAsync(Service service);
+    Task UpdateAsync(Service service);
+    Task DeleteAsync(int id);
 }
 
-public interface IAgendamentoRepository
+public interface IAppointmentRepository
 {
-    Task<Agendamento?> ObterPorIdAsync(int id);
-    Task<IEnumerable<Agendamento>> ListarPorClienteAsync(int clienteId);
-    Task<IEnumerable<Agendamento>> ListarPorProfissionalAsync(int profissionalId, DateTime? data = null);
-    Task<IEnumerable<Agendamento>> ListarPorSalaoAsync(int salaoId, DateTime? data = null);
-    Task<bool> VerificarConflitoAsync(int profissionalId, DateTime dataHora, int duracaoMinutos, int? ignorarId = null);
-    Task<int> CriarAsync(Agendamento agendamento);
-    Task AtualizarStatusAsync(int id, Domain.Enums.StatusAgendamento status);
+    Task<Appointment?> GetByIdAsync(int id);
+    Task<IEnumerable<Appointment>> ListByClientAsync(int clientId);
+    Task<IEnumerable<Appointment>> ListByProfessionalAsync(int professionalId, DateTime? date = null);
+    Task<IEnumerable<Appointment>> ListBySalonAsync(int salonId, DateTime? date = null);
+    Task<bool> HasConflictAsync(int professionalId, DateTime scheduledAt, int durationMinutes, int? ignoreId = null);
+    Task<int> CreateAsync(Appointment appointment);
+    Task UpdateStatusAsync(int id, AppointmentStatus status);
 }
 
-public interface IAvaliacaoRepository
+public interface IReviewRepository
 {
-    Task<IEnumerable<Avaliacao>> ListarPorSalaoAsync(int salaoId);
-    Task<IEnumerable<Avaliacao>> ListarPorProfissionalAsync(int profissionalId);
-    Task<bool> ExisteAvaliacaoParaAgendamentoAsync(int agendamentoId);
-    Task<int> CriarAsync(Avaliacao avaliacao);
+    Task<IEnumerable<Review>> ListBySalonAsync(int salonId);
+    Task<IEnumerable<Review>> ListByProfessionalAsync(int professionalId);
+    Task<bool> ReviewExistsForAppointmentAsync(int appointmentId);
+    Task<int> CreateAsync(Review review);
 }
 
-public interface IPlanoRepository
+public interface IPlanRepository
 {
-    Task<IEnumerable<Plano>> ListarAtivosAsync();
-    Task<Plano?> ObterPorIdAsync(int id);
+    Task<IEnumerable<Plan>> ListActiveAsync();
+    Task<Plan?> GetByIdAsync(int id);
 }
 
-public interface IAssinaturaRepository
+public interface ISubscriptionRepository
 {
-    Task<Assinatura?> ObterAtivaDoSalaoAsync(int salaoId);
-    Task<int> CriarAsync(Assinatura assinatura);
-    Task AtualizarAsync(Assinatura assinatura);
+    Task<Subscription?> GetActiveBySalonAsync(int salonId);
+    Task<int> CreateAsync(Subscription subscription);
+    Task UpdateAsync(Subscription subscription);
 }
 
-public interface INotificacaoRepository
+public interface INotificationRepository
 {
-    Task<IEnumerable<Notificacao>> ListarPorUsuarioAsync(int usuarioId, bool apenasNaoLidas = false);
-    Task<int> CriarAsync(Notificacao notificacao);
-    Task MarcarComoLidaAsync(int id, int usuarioId);
-    Task MarcarTodasComoLidasAsync(int usuarioId);
+    Task<IEnumerable<Notification>> ListByUserAsync(int userId, bool unreadOnly = false);
+    Task<int> CreateAsync(Notification notification);
+    Task MarkAsReadAsync(int id, int userId);
+    Task MarkAllAsReadAsync(int userId);
 }
 
-public interface ICategoriaRepository
+public interface ICategoryRepository
 {
-    Task<IEnumerable<Categoria>> ListarAsync();
-    Task<Categoria?> ObterPorIdAsync(int id);
+    Task<IEnumerable<Category>> ListAsync();
+    Task<Category?> GetByIdAsync(int id);
 }
 
 public interface ITokenService
 {
-    string GerarToken(Domain.Entities.Usuario usuario);
+    string GenerateToken(User user);
 }

@@ -10,37 +10,31 @@ namespace HoraDaBeleza.Infrastructure.Services;
 
 public class JwtTokenService : ITokenService
 {
-    private readonly IConfiguration _configuration;
+    private readonly IConfiguration _config;
+    public JwtTokenService(IConfiguration config) => _config = config;
 
-    public JwtTokenService(IConfiguration configuration)
+    public string GenerateToken(User user)
     {
-        _configuration = configuration;
-    }
+        var jwt = _config.GetSection("Jwt");
+        var key = Encoding.UTF8.GetBytes(jwt["Key"]!);
 
-    public string GerarToken(Usuario usuario)
-    {
-        var jwtSettings = _configuration.GetSection("Jwt");
-        var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
-
-        var claims = new List<Claim>
+        var claims = new[]
         {
-            new(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-            new(ClaimTypes.Name, usuario.Nome),
-            new(ClaimTypes.Email, usuario.Email),
-            new(ClaimTypes.Role, usuario.Tipo.ToString()),
-            new("tipo", ((int)usuario.Tipo).ToString())
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name,           user.Name),
+            new Claim(ClaimTypes.Email,          user.Email),
+            new Claim(ClaimTypes.Role,           user.Type.ToString()),
+            new Claim("type",                    ((int)user.Type).ToString())
         };
 
-        var credentials = new SigningCredentials(
-            new SymmetricSecurityKey(key),
-            SecurityAlgorithms.HmacSha256);
-
         var token = new JwtSecurityToken(
-            issuer: jwtSettings["Issuer"],
-            audience: jwtSettings["Audience"],
-            claims: claims,
-            expires: DateTime.UtcNow.AddDays(Convert.ToDouble(jwtSettings["ExpiryDays"] ?? "7")),
-            signingCredentials: credentials);
+            issuer:             jwt["Issuer"],
+            audience:           jwt["Audience"],
+            claims:             claims,
+            expires:            DateTime.UtcNow.AddDays(Convert.ToDouble(jwt["ExpiryDays"] ?? "7")),
+            signingCredentials: new SigningCredentials(
+                new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256));
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }

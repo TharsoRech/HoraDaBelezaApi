@@ -1,36 +1,36 @@
 namespace HoraDaBeleza.Domain.Enums;
 
-public enum StatusAgendamento
+public enum AppointmentStatus
 {
-    Pendente = 1,
-    Confirmado = 2,
-    Cancelado = 3,
-    Concluido = 4,
-    NaoCompareceu = 5
+    Pending      = 1,
+    Confirmed    = 2,
+    Cancelled    = 3,
+    Completed    = 4,
+    NoShow       = 5
 }
 
-public enum TipoUsuario
+public enum UserType
 {
-    Cliente = 1,
-    Profissional = 2,
-    Proprietario = 3,
-    Admin = 4
+    Client       = 1,
+    Professional = 2,
+    Owner        = 3,
+    Admin        = 4
 }
 
-public enum StatusAssinatura
+public enum SubscriptionStatus
 {
-    Ativa = 1,
-    Cancelada = 2,
-    Expirada = 3,
-    Suspensa = 4
+    Active    = 1,
+    Cancelled = 2,
+    Expired   = 3,
+    Suspended = 4
 }
 
-public enum TipoNotificacao
+public enum NotificationType
 {
-    AgendamentoConfirmado = 1,
-    AgendamentoCancelado = 2,
-    AgendamentoLembrete = 3,
-    NovaAvaliacao = 4,
-    Promocao = 5,
-    Sistema = 6
+    AppointmentConfirmed = 1,
+    AppointmentCancelled = 2,
+    AppointmentReminder  = 3,
+    NewReview            = 4,
+    Promotion            = 5,
+    System               = 6
 }

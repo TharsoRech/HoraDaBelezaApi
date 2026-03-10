@@ -12,17 +12,17 @@ public static class DependencyInjection
     {
         services.AddSingleton<IDbConnectionFactory, SqlServerConnectionFactory>();
 
-        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-        services.AddScoped<ISalaoRepository, SalaoRepository>();
-        services.AddScoped<IProfissionalRepository, ProfissionalRepository>();
-        services.AddScoped<IServicoRepository, ServicoRepository>();
-        services.AddScoped<IAgendamentoRepository, AgendamentoRepository>();
-        services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
-        services.AddScoped<IPlanoRepository, PlanoRepository>();
-        services.AddScoped<IAssinaturaRepository, AssinaturaRepository>();
-        services.AddScoped<INotificacaoRepository, NotificacaoRepository>();
-        services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-        services.AddScoped<ITokenService, JwtTokenService>();
+        services.AddScoped<IUserRepository,         UserRepository>();
+        services.AddScoped<ISalonRepository,        SalonRepository>();
+        services.AddScoped<IProfessionalRepository, ProfessionalRepository>();
+        services.AddScoped<IServiceRepository,      ServiceRepository>();
+        services.AddScoped<IAppointmentRepository,  AppointmentRepository>();
+        services.AddScoped<IReviewRepository,       ReviewRepository>();
+        services.AddScoped<IPlanRepository,         PlanRepository>();
+        services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
+        services.AddScoped<ICategoryRepository,     CategoryRepository>();
+        services.AddScoped<ITokenService,           JwtTokenService>();
 
         return services;
     }

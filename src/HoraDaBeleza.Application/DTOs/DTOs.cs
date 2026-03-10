@@ -2,73 +2,71 @@ using HoraDaBeleza.Domain.Enums;
 
 namespace HoraDaBeleza.Application.DTOs;
 
-// Auth
-public record LoginRequest(string Email, string Senha);
-public record LoginResponse(string Token, string Nome, string Email, TipoUsuario Tipo);
-public record RegistroRequest(string Nome, string Email, string Senha, string? Telefone, TipoUsuario Tipo);
+// ── Auth ───────────────────────────────────────────────────────────────────
+public record LoginRequest(string Email, string Password);
+public record LoginResponse(string Token, string Name, string Email, UserType Type);
+public record RegisterRequest(string Name, string Email, string Password, string? Phone, UserType Type);
 
-// Usuario
-public record UsuarioDto(int Id, string Nome, string Email, string? Telefone, string? FotoUrl, TipoUsuario Tipo, bool Ativo);
+// ── User ───────────────────────────────────────────────────────────────────
+public record UserDto(int Id, string Name, string Email, string? Phone, string? PhotoUrl, UserType Type, bool Active);
+public record UpdateProfileRequest(string Name, string? Phone, string? PhotoUrl);
 
-// Salao
-public record SalaoDto(int Id, int ProprietarioId, string Nome, string? Descricao, string? LogoUrl,
-    string Endereco, string Cidade, string Estado, string? Telefone, decimal? Latitude, decimal? Longitude,
-    decimal? NotaMedia, bool Ativo);
+// ── Salon ──────────────────────────────────────────────────────────────────
+public record SalonDto(int Id, int OwnerId, string Name, string? Description, string? LogoUrl,
+    string Address, string City, string State, string? Phone,
+    decimal? Latitude, decimal? Longitude, decimal? AverageRating, bool Active);
 
-public record CriarSalaoRequest(string Nome, string? Descricao, string Endereco, string Cidade,
-    string Estado, string? Cep, decimal? Latitude, decimal? Longitude, string? Telefone, string? Email, string? HorarioFuncionamento);
+public record CreateSalonRequest(string Name, string? Description, string Address, string City,
+    string State, string? ZipCode, decimal? Latitude, decimal? Longitude,
+    string? Phone, string? Email, string? BusinessHours);
 
-public record AtualizarSalaoRequest(string Nome, string? Descricao, string Endereco, string Cidade,
-    string Estado, string? Cep, decimal? Latitude, decimal? Longitude, string? Telefone, string? Email, string? HorarioFuncionamento);
+public record UpdateSalonRequest(string Name, string? Description, string Address, string City,
+    string State, string? ZipCode, decimal? Latitude, decimal? Longitude,
+    string? Phone, string? Email, string? BusinessHours);
 
-// Profissional
-public record ProfissionalDto(int Id, int UsuarioId, int SalaoId, string NomeUsuario, string? FotoUrl,
-    string? Especialidade, string? Biografia, decimal? NotaMedia, int TotalAvaliacoes, bool Ativo);
+// ── Professional ───────────────────────────────────────────────────────────
+public record ProfessionalDto(int Id, int UserId, int SalonId, string UserName, string? PhotoUrl,
+    string? Specialty, string? Bio, decimal? AverageRating, int TotalReviews, bool Active);
 
-public record CriarProfissionalRequest(int UsuarioId, int SalaoId, string? Especialidade, string? Biografia);
+public record CreateProfessionalRequest(int UserId, int SalonId, string? Specialty, string? Bio);
 
-// Servico
-public record ServicoDto(int Id, int SalaoId, int CategoriaId, string NomeCategoria, string Nome,
-    string? Descricao, decimal Preco, int DuracaoMinutos, bool Ativo);
+// ── Service ────────────────────────────────────────────────────────────────
+public record ServiceDto(int Id, int SalonId, int CategoryId, string CategoryName, string Name,
+    string? Description, decimal Price, int DurationMinutes, bool Active);
 
-public record CriarServicoRequest(int CategoriaId, string Nome, string? Descricao, decimal Preco, int DuracaoMinutos);
-public record AtualizarServicoRequest(string Nome, string? Descricao, decimal Preco, int DuracaoMinutos, bool Ativo);
+public record CreateServiceRequest(int CategoryId, string Name, string? Description, decimal Price, int DurationMinutes);
+public record UpdateServiceRequest(string Name, string? Description, decimal Price, int DurationMinutes, bool Active);
 
-// Categoria
-public record CategoriaDto(int Id, string Nome, string? IconeUrl);
+// ── Category ───────────────────────────────────────────────────────────────
+public record CategoryDto(int Id, string Name, string? IconUrl);
 
-// Agendamento
-public record AgendamentoDto(int Id, int ClienteId, string NomeCliente, int ProfissionalId, string NomeProfissional,
-    int ServicoId, string NomeServico, int SalaoId, string NomeSalao, DateTime DataHora,
-    int DuracaoMinutos, decimal ValorTotal, StatusAgendamento Status, string? Observacoes, DateTime CriadoEm);
+// ── Appointment ────────────────────────────────────────────────────────────
+public record AppointmentDto(int Id, int ClientId, string ClientName, int ProfessionalId,
+    string ProfessionalName, int ServiceId, string ServiceName, int SalonId, string SalonName,
+    DateTime ScheduledAt, int DurationMinutes, decimal TotalPrice,
+    AppointmentStatus Status, string? Notes, DateTime CreatedAt);
 
-public record CriarAgendamentoRequest(int ProfissionalId, int ServicoId, int SalaoId,
-    DateTime DataHora, string? Observacoes);
+public record CreateAppointmentRequest(int ProfessionalId, int ServiceId, int SalonId,
+    DateTime ScheduledAt, string? Notes);
 
-public record AtualizarStatusAgendamentoRequest(StatusAgendamento Status);
+public record UpdateAppointmentStatusRequest(AppointmentStatus Status);
 
-// Avaliacao
-public record AvaliacaoDto(int Id, int AgendamentoId, string NomeCliente, int Nota,
-    string? Comentario, DateTime CriadoEm);
+// ── Review ─────────────────────────────────────────────────────────────────
+public record ReviewDto(int Id, int AppointmentId, string ClientName, int Rating,
+    string? Comment, DateTime CreatedAt);
 
-public record CriarAvaliacaoRequest(int AgendamentoId, int Nota, string? Comentario);
+public record CreateReviewRequest(int AppointmentId, int Rating, string? Comment);
 
-// Plano
-public record PlanoDto(int Id, string Nome, string? Descricao, decimal Preco,
-    int PeriodoDias, int LimiteAgendamentos);
+// ── Plan ───────────────────────────────────────────────────────────────────
+public record PlanDto(int Id, string Name, string? Description, decimal Price,
+    int PeriodDays, int AppointmentLimit);
 
-// Assinatura
-public record AssinaturaDto(int Id, int SalaoId, int PlanoId, string NomePlano,
-    Domain.Enums.StatusAssinatura Status, DateTime DataInicio, DateTime DataFim);
+// ── Subscription ───────────────────────────────────────────────────────────
+public record SubscriptionDto(int Id, int SalonId, int PlanId, string PlanName,
+    SubscriptionStatus Status, DateTime StartDate, DateTime EndDate);
 
-public record CriarAssinaturaRequest(int SalaoId, int PlanoId);
+public record CreateSubscriptionRequest(int SalonId, int PlanId);
 
-// Notificacao
-public record NotificacaoDto(int Id, string Titulo, string Mensagem,
-    Domain.Enums.TipoNotificacao Tipo, bool Lida, int? ReferenciaId, DateTime CriadoEm);
-
-// Horarios disponíveis
-public record HorarioDisponivelDto(DateTime DataHora, bool Disponivel);
-
-// Paginação
-public record PagedResult<T>(IEnumerable<T> Itens, int Total, int Pagina, int TamanhoPagina);
+// ── Notification ───────────────────────────────────────────────────────────
+public record NotificationDto(int Id, string Title, string Message,
+    NotificationType Type, bool Read, int? ReferenceId, DateTime CreatedAt);

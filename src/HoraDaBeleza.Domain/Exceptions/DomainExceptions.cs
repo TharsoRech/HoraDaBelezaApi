@@ -7,8 +7,8 @@ public class DomainException : Exception
 
 public class NotFoundException : DomainException
 {
-    public NotFoundException(string entidade, object id)
-        : base($"{entidade} com id '{id}' não foi encontrado.") { }
+    public NotFoundException(string entity, object id)
+        : base($"{entity} with id '{id}' was not found.") { }
 }
 
 public class BusinessException : DomainException
@@ -18,5 +18,5 @@ public class BusinessException : DomainException
 
 public class UnauthorizedException : DomainException
 {
-    public UnauthorizedException(string message = "Acesso não autorizado.") : base(message) { }
+    public UnauthorizedException(string message = "Unauthorized access.") : base(message) { }
 }

@@ -14,15 +14,8 @@ public class SqlServerConnectionFactory : IDbConnectionFactory
     private readonly string _connectionString;
 
     public SqlServerConnectionFactory(IConfiguration configuration)
-    {
-        _connectionString = configuration.GetConnectionString("DefaultConnection")
-            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-    }
+        => _connectionString = configuration.GetConnectionString("DefaultConnection")!;
 
     public IDbConnection CreateConnection()
-    {
-        var connection = new SqlConnection(_connectionString);
-        connection.Open();
-        return connection;
-    }
+        => new SqlConnection(_connectionString);
 }

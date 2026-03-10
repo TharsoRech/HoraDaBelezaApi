@@ -7,14 +7,14 @@ namespace HoraDaBeleza.API.Controllers;
 [Route("api/[controller]")]
 public abstract class ApiController : ControllerBase
 {
-    protected int UsuarioId =>
+    protected int UserId =>
         int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-    protected string UsuarioTipo =>
+    protected string UserType =>
         User.FindFirstValue(ClaimTypes.Role) ?? "";
 
-    protected bool IsProprietario => UsuarioTipo == "Proprietario";
-    protected bool IsAdmin        => UsuarioTipo == "Admin";
-    protected bool IsProfissional => UsuarioTipo == "Profissional";
-    protected bool IsCliente      => UsuarioTipo == "Cliente";
+    protected bool IsOwner        => UserType == "Owner";
+    protected bool IsAdmin         => UserType == "Admin";
+    protected bool IsProfessional  => UserType == "Professional";
+    protected bool IsClient        => UserType == "Client";
 }
