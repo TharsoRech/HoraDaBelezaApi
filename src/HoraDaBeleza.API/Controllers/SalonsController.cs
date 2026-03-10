@@ -1,4 +1,7 @@
 using HoraDaBeleza.Application.Commands.Salons;
+using HoraDaBeleza.Application.Commands.Salons.CreateSalonCommand;
+using HoraDaBeleza.Application.Commands.Salons.DeleteSalonCommand;
+using HoraDaBeleza.Application.Commands.Salons.UpdateSalonCommand;
 using HoraDaBeleza.Application.DTOs;
 using HoraDaBeleza.Application.Queries.GetSalonQuery;
 using HoraDaBeleza.Application.Queries.ListSalonsByOwnerQuery;
