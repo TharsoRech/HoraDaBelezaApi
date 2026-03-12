@@ -11,10 +11,10 @@ public enum AppointmentStatus
 
 public enum UserType
 {
-    Client       = 1,
-    Professional = 2,
-    Owner        = 3,
-    Admin        = 4
+    Client       = 0,
+    Professional = 1,
+    Owner        = 2,
+    Admin        = 3
 }
 
 public enum SubscriptionStatus
