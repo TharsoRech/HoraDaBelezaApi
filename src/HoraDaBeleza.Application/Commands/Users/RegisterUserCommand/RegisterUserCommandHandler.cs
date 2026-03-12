@@ -14,6 +14,13 @@ public class RegisterUserCommandHandler(IUserRepository repo) : IRequestHandler<
         if (await repo.EmailExistsAsync(request.Email))
             throw new BusinessException("Email address is already registered.");
 
+        // Validação de CPF/CNPJ duplicado
+        if (!string.IsNullOrEmpty(request.Doc))
+        {
+            if (await repo.DocExistsAsync(request.Doc))
+                throw new BusinessException("Já existe um usuário cadastrado com este CPF/CNPJ.");
+        }
+
         var user = new User
         {
             Name         = request.Name,

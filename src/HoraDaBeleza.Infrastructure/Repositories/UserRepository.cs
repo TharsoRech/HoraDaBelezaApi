@@ -50,4 +50,20 @@ public class UserRepository : IUserRepository
             : "SELECT COUNT(1) FROM Users WHERE Email=@Email";
         return await conn.QuerySingleAsync<int>(sql, new { Email = email.ToLower(), IgnoreId = ignoreId }) > 0;
     }
+
+    public async Task<User?> GetByDocAsync(string doc)
+    {
+        using var conn = _db.CreateConnection();
+        return await conn.QueryFirstOrDefaultAsync<User>(
+            "SELECT * FROM Users WHERE Doc=@Doc AND Active=1", new { Doc = doc });
+    }
+
+    public async Task<bool> DocExistsAsync(string doc, int? ignoreId = null)
+    {
+        using var conn = _db.CreateConnection();
+        var sql = ignoreId.HasValue
+            ? "SELECT COUNT(1) FROM Users WHERE Doc=@Doc AND Id<>@IgnoreId AND Active=1"
+            : "SELECT COUNT(1) FROM Users WHERE Doc=@Doc AND Active=1";
+        return await conn.QuerySingleAsync<int>(sql, new { Doc = doc, IgnoreId = ignoreId }) > 0;
+    }
 }
