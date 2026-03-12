@@ -28,8 +28,8 @@ public class UserRepository : IUserRepository
     {
         using var conn = _db.CreateConnection();
         const string sql = @"
-            INSERT INTO Users (Name,Email,PasswordHash,Phone,PhotoUrl,Type,Active,CreatedAt)
-            VALUES (@Name,@Email,@PasswordHash,@Phone,@PhotoUrl,@Type,@Active,@CreatedAt);
+            INSERT INTO Users (Name,Email,PasswordHash,Phone,Base64Image,Type,Active,CreatedAt)
+            VALUES (@Name,@Email,@PasswordHash,@Phone,@Base64Image,@Type,@Active,@CreatedAt);
             SELECT CAST(SCOPE_IDENTITY() AS INT);";
         return await conn.QuerySingleAsync<int>(sql, user);
     }
@@ -38,7 +38,7 @@ public class UserRepository : IUserRepository
     {
         using var conn = _db.CreateConnection();
         await conn.ExecuteAsync(
-            "UPDATE Users SET Name=@Name,Phone=@Phone,PhotoUrl=@PhotoUrl,UpdatedAt=@UpdatedAt WHERE Id=@Id",
+            "UPDATE Users SET Name=@Name,Phone=@Phone,Base64Image=@Base64Image,UpdatedAt=@UpdatedAt WHERE Id=@Id",
             user);
     }
 

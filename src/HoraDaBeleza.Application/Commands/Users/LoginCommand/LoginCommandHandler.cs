@@ -19,6 +19,6 @@ public class LoginCommandHandler(IUserRepository repo, ITokenService token) : IR
         if (!user.Active)
             throw new BusinessException("Account is inactive. Please contact support.");
 
-        return new LoginResponse(token.GenerateToken(user), user.Name, user.Email, user.Type);
+        return new LoginResponse(token.GenerateToken(user), user.Name, user.Email, user.Type, user.Doc, user.Base64Image, user.Base64Image);
     }
 }

@@ -13,6 +13,6 @@ public class GetProfileQueryHandler : IRequestHandler<GetProfileQuery, UserDto>
     public async Task<UserDto> Handle(GetProfileQuery req, CancellationToken ct)
     {
         var u = await _repo.GetByIdAsync(req.UserId) ?? throw new NotFoundException("User", req.UserId);
-        return new UserDto(u.Id, u.Name, u.Email, u.Phone, u.PhotoUrl, u.Type, u.Active);
+        return new UserDto(u.Id, u.Name, u.Email, u.Phone, u.Base64Image, u.Type, u.Active, u.Doc, u.Dob?.ToString("yyyy-MM-dd"));
     }
 }

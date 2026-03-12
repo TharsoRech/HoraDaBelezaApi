@@ -25,6 +25,6 @@ public class CreateProfessionalCommandHandler(IProfessionalRepository repo, ISal
 
         var id = await repo.CreateAsync(professional);
         return new ProfessionalDto(id, req.UserId, req.SalonId, user.Name,
-            user.PhotoUrl, req.Specialty, req.Bio, null, 0, true);
+            user.Base64Image, req.Specialty, req.Bio, null, 0, true);
     }
 }

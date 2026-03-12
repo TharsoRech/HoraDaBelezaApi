@@ -2,4 +2,4 @@ using HoraDaBeleza.Domain.Enums;
 
 namespace HoraDaBeleza.Application.DTOs;
 
-public record RegisterRequest(string Name, string Email, string Password, string? Phone, UserType Type);
+public record RegisterRequest(string Name, string Email, string Password, string? Phone, UserType Type, string? Doc = null, string? Dob = null, string? Base64Image = null);

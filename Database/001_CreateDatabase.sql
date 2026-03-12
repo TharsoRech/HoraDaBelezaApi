@@ -22,6 +22,7 @@ CREATE TABLE Users (
     PasswordHash NVARCHAR(255)  NOT NULL,
     Phone        NVARCHAR(20)   NULL,
     PhotoUrl     NVARCHAR(500)  NULL,
+    Doc          NVARCHAR(20)   NULL, -- CPF/CNPJ
     Type         INT            NOT NULL DEFAULT 1,  -- 1=Client 2=Professional 3=Owner 4=Admin
     Active       BIT            NOT NULL DEFAULT 1,
     CreatedAt    DATETIME2      NOT NULL DEFAULT GETUTCDATE(),

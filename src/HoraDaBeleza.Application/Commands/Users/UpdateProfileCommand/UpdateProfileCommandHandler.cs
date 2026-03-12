@@ -13,12 +13,12 @@ public class UpdateProfileCommandHandler(IUserRepository repo) : IRequestHandler
         var user = await repo.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException("User", request.UserId);
 
-        user.Name      = request.Name;
-        user.Phone     = request.Phone;
-        user.PhotoUrl  = request.PhotoUrl;
-        user.UpdatedAt = DateTime.UtcNow;
+        user.Name        = request.Name;
+        user.Phone       = request.Phone;
+        user.Base64Image = request.Base64Image;
+        user.UpdatedAt   = DateTime.UtcNow;
 
         await repo.UpdateAsync(user);
-        return new UserDto(user.Id, user.Name, user.Email, user.Phone, user.PhotoUrl, user.Type, user.Active);
+        return new UserDto(user.Id, user.Name, user.Email, user.Phone, user.Base64Image, user.Type, user.Active, user.Doc, user.Dob?.ToString("yyyy-MM-dd"));
     }
 }

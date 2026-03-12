@@ -41,7 +41,7 @@ public class AuthController : ApiController
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         var result = await _mediator.Send(
-            new RegisterUserCommand(request.Name, request.Email, request.Password, request.Phone, request.Type));
+            new RegisterUserCommand(request.Name, request.Email, request.Password, request.Phone, request.Type, request.Doc, request.Dob, request.Base64Image));
         return Created($"/api/users/{result.Id}", result);
     }
 
@@ -61,5 +61,5 @@ public class AuthController : ApiController
     [Authorize]
     [ProducesResponseType(typeof(UserDto), 200)]
     public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
-        => Ok(await _mediator.Send(new UpdateProfileCommand(UserId, request.Name, request.Phone, request.PhotoUrl)));
+        => Ok(await _mediator.Send(new UpdateProfileCommand(UserId, request.Name, request.Phone, request.PhotoUrl, request.Base64Image)));
 }
