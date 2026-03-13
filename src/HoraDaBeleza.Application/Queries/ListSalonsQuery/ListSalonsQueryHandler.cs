@@ -13,6 +13,6 @@ public class ListSalonsQueryHandler : IRequestHandler<ListSalonsQuery, IEnumerab
     {
         var salons = await _repo.ListAsync(req.City, req.Search);
         return salons.Select(s => new SalonDto(s.Id, s.OwnerId, s.Name, s.Description, s.LogoUrl,
-            s.Address, s.City, s.State, s.Phone, s.Latitude, s.Longitude, null, s.Active));
+            s.Address, s.City, s.State, s.Phone, s.Latitude, s.Longitude, null, s.Active, null, 0, null, null, false, false, false));
     }
 }

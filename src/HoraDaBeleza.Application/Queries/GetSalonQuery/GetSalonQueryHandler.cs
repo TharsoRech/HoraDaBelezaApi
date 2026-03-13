@@ -14,6 +14,6 @@ public class GetSalonQueryHandler : IRequestHandler<GetSalonQuery, SalonDto>
     {
         var s = await _repo.GetByIdAsync(req.Id) ?? throw new NotFoundException("Salon", req.Id);
         return new SalonDto(s.Id, s.OwnerId, s.Name, s.Description, s.LogoUrl,
-            s.Address, s.City, s.State, s.Phone, s.Latitude, s.Longitude, null, s.Active);
+            s.Address, s.City, s.State, s.Phone, s.Latitude, s.Longitude, null, s.Active, null, 0, null, null, false, false, false);
     }
 }

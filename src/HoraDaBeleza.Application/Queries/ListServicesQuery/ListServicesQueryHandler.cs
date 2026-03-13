@@ -13,6 +13,6 @@ public class ListServicesQueryHandler : IRequestHandler<ListServicesQuery, IEnum
     {
         var services = await _repo.ListBySalonAsync(req.SalonId, req.CategoryId);
         return services.Select(s => new ServiceDto(s.Id, s.SalonId, s.CategoryId, "",
-            s.Name, s.Description, s.Price, s.DurationMinutes, s.Active));
+            s.Name, s.Description, s.Price, s.DurationMinutes, s.Active, null, null));
     }
 }

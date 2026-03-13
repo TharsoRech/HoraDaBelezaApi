@@ -31,6 +31,6 @@ public class UpdateSalonCommandHandler(ISalonRepository repo) : IRequestHandler<
         await repo.UpdateAsync(salon);
         return new SalonDto(salon.Id, salon.OwnerId, salon.Name, salon.Description, salon.LogoUrl,
             salon.Address, salon.City, salon.State, salon.Phone,
-            salon.Latitude, salon.Longitude, null, salon.Active);
+            salon.Latitude, salon.Longitude, null, salon.Active, null, 0, null, null, false, false, false);
     }
 }

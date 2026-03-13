@@ -62,4 +62,46 @@ public class SalonRepository : ISalonRepository
         using var conn = _db.CreateConnection();
         await conn.ExecuteAsync("UPDATE Salons SET Active=0 WHERE Id=@Id", new { Id = id });
     }
+
+    public async Task<IEnumerable<Salon>> GetPopularAsync()
+    {
+        using var conn = _db.CreateConnection();
+        return await conn.QueryAsync<Salon>(
+            "SELECT * FROM Salons WHERE Active=1 ORDER BY AverageRating DESC");
+    }
+
+    public async Task<IEnumerable<Domain.Entities.Service>> GetServicesByIdsAsync(List<int> serviceIds)
+    {
+        using var conn = _db.CreateConnection();
+        var sql = "SELECT * FROM Services WHERE Id IN @ServiceIds AND Active=1";
+        return await conn.QueryAsync<Domain.Entities.Service>(sql, new { ServiceIds = serviceIds });
+    }
+
+    public async Task<IEnumerable<Professional>> GetProfessionalsByIdsAsync(List<int> professionalIds)
+    {
+        using var conn = _db.CreateConnection();
+        var sql = "SELECT * FROM Professionals WHERE Id IN @ProfessionalIds AND Active=1";
+        return await conn.QueryAsync<Professional>(sql, new { ProfessionalIds = professionalIds });
+    }
+
+    public async Task<IEnumerable<Review>> GetReviewsAsync(int salonId)
+    {
+        using var conn = _db.CreateConnection();
+        var sql = @"
+            SELECT r.*, u.Name AS UserName, u.Base64Image AS UserPhoto
+            FROM Reviews r
+            INNER JOIN Users u ON u.Id = r.UserId
+            WHERE r.SalonId = @SalonId";
+        return await conn.QueryAsync<Review>(sql, new { SalonId = salonId });
+    }
+
+    public async Task<IEnumerable<Salon>> GetMyUnitsAsync(int userId)
+    {
+        using var conn = _db.CreateConnection();
+        var sql = @"
+            SELECT s.* FROM Salons s
+            INNER JOIN Professionals p ON p.SalonId = s.Id
+            WHERE p.UserId = @UserId AND s.Active = 1";
+        return await conn.QueryAsync<Salon>(sql, new { UserId = userId });
+    }
 }

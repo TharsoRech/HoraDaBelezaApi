@@ -3,7 +3,12 @@ using HoraDaBeleza.Application.Commands.Salons.CreateSalonCommand;
 using HoraDaBeleza.Application.Commands.Salons.DeleteSalonCommand;
 using HoraDaBeleza.Application.Commands.Salons.UpdateSalonCommand;
 using HoraDaBeleza.Application.DTOs;
+using HoraDaBeleza.Application.Queries.GetProfessionalsByIdsQuery;
 using HoraDaBeleza.Application.Queries.GetSalonQuery;
+using HoraDaBeleza.Application.Queries.GetSalonReviewsQuery;
+using HoraDaBeleza.Application.Queries.GetServicesByIdsQuery;
+using HoraDaBeleza.Application.Queries.ListMyUnitsQuery;
+using HoraDaBeleza.Application.Queries.ListPopularSalonsQuery;
 using HoraDaBeleza.Application.Queries.ListSalonsByOwnerQuery;
 using HoraDaBeleza.Application.Queries.ListSalonsQuery;
 using MediatR;
@@ -86,4 +91,48 @@ public class SalonsController : ApiController
         await _mediator.Send(new DeleteSalonCommand(id, UserId));
         return NoContent();
     }
+
+    /// <summary>Get popular salons (public)</summary>
+    [HttpGet("popular")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(IEnumerable<SalonDto>), 200)]
+    public async Task<IActionResult> GetPopular()
+        => Ok(await _mediator.Send(new ListPopularSalonsQuery()));
+
+    /// <summary>Get salon services by IDs (public)</summary>
+    /// <param name="serviceIds">Comma-separated service IDs</param>
+    [HttpGet("services/{serviceIds}")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(IEnumerable<ServiceDto>), 200)]
+    public async Task<IActionResult> GetServicesByIds(string serviceIds)
+    {
+        var ids = serviceIds.Split(',').Select(int.Parse).ToList();
+        return Ok(await _mediator.Send(new GetServicesByIdsQuery(ids)));
+    }
+
+    /// <summary>Get salon professionals by IDs (public)</summary>
+    /// <param name="professionalIds">Comma-separated professional IDs</param>
+    [HttpGet("professionals/{professionalIds}")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(IEnumerable<ProfessionalDto>), 200)]
+    public async Task<IActionResult> GetProfessionalsByIds(string professionalIds)
+    {
+        var ids = professionalIds.Split(',').Select(int.Parse).ToList();
+        return Ok(await _mediator.Send(new GetProfessionalsByIdsQuery(ids)));
+    }
+
+    /// <summary>Get salon reviews (public)</summary>
+    /// <param name="id">Salon ID</param>
+    [HttpGet("{id:int}/reviews")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(IEnumerable<ReviewDto>), 200)]
+    public async Task<IActionResult> GetReviews(int id)
+        => Ok(await _mediator.Send(new GetSalonReviewsQuery(id)));
+
+    /// <summary>Get my units (owner only)</summary>
+    [HttpGet("my-units")]
+    [Authorize]
+    [ProducesResponseType(typeof(IEnumerable<SalonDto>), 200)]
+    public async Task<IActionResult> GetMyUnits()
+        => Ok(await _mediator.Send(new ListMyUnitsQuery(UserId)));
 }

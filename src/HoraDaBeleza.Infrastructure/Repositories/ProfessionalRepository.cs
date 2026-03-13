@@ -47,4 +47,36 @@ public class ProfessionalRepository : IProfessionalRepository
         using var conn = _db.CreateConnection();
         await conn.ExecuteAsync("UPDATE Professionals SET Active=0 WHERE Id=@Id", new { Id = id });
     }
+
+    public async Task<IEnumerable<Professional>> GetTopAsync()
+    {
+        using var conn = _db.CreateConnection();
+        return await conn.QueryAsync<Professional>(
+            "SELECT p.* FROM Professionals p INNER JOIN Users u ON u.Id=p.UserId WHERE p.Active=1 ORDER BY p.AverageRating DESC");
+    }
+
+    public async Task<Application.DTOs.AvailabilityDto> GetAvailabilityAsync(int professionalId, string date)
+    {
+        using var conn = _db.CreateConnection();
+        var sql = @"
+            SELECT p.Id AS ProfessionalId, p.UserId, p.SalonId, p.Specialty, p.Bio, p.AverageRating, p.TotalReviews, p.Active,
+                   s.Id AS SalonId, s.Name AS SalonName, s.Address AS SalonAddress, s.City AS SalonCity, s.State AS SalonState,
+                   u.Name AS UserName, u.Base64Image AS UserPhoto
+            FROM Professionals p
+            INNER JOIN Salons s ON s.Id = p.SalonId
+            INNER JOIN Users u ON u.Id = p.UserId
+            WHERE p.Id = @ProfessionalId AND p.Active = 1";
+        
+        var result = await conn.QueryAsync(sql, new { ProfessionalId = professionalId });
+        // Implementation would need to be completed based on actual requirements
+        return new Application.DTOs.AvailabilityDto(professionalId, date, []);
+    }
+
+    public async Task<IEnumerable<Salon>> GetSalonsByProfessionalAsync(int professionalId)
+    {
+        using var conn = _db.CreateConnection();
+        return await conn.QueryAsync<Salon>(
+            "SELECT s.* FROM Salons s INNER JOIN Professionals p ON p.SalonId = s.Id WHERE p.UserId = @ProfessionalId AND s.Active = 1",
+            new { ProfessionalId = professionalId });
+    }
 }

@@ -32,5 +32,5 @@ public class CreateSalonCommandHandler(ISalonRepository repo) : IRequestHandler<
 
     private static SalonDto ToDto(Salon s) =>
         new(s.Id, s.OwnerId, s.Name, s.Description, s.LogoUrl,
-            s.Address, s.City, s.State, s.Phone, s.Latitude, s.Longitude, null, s.Active);
+            s.Address, s.City, s.State, s.Phone, s.Latitude, s.Longitude, null, s.Active, null, 0, null, null, false, false, false);
 }

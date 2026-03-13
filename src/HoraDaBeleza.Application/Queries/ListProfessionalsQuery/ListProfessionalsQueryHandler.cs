@@ -13,6 +13,6 @@ public class ListProfessionalsQueryHandler : IRequestHandler<ListProfessionalsQu
     {
         var professionals = await _repo.ListBySalonAsync(req.SalonId);
         return professionals.Select(p => new ProfessionalDto(p.Id, p.UserId, p.SalonId, "",
-            null, p.Specialty, p.Bio, p.AverageRating, p.TotalReviews, p.Active));
+            null, p.Specialty, p.Bio, p.AverageRating, p.TotalReviews, p.Active, null, null, false));
     }
 }

@@ -27,6 +27,6 @@ public class CreateServiceCommandHandler(IServiceRepository repo, ISalonReposito
 
         var id = await repo.CreateAsync(service);
         return new ServiceDto(id, req.SalonId, req.CategoryId, category.Name,
-            req.Name, req.Description, req.Price, req.DurationMinutes, true);
+            req.Name, req.Description, req.Price, req.DurationMinutes, true, null, null);
     }
 }
