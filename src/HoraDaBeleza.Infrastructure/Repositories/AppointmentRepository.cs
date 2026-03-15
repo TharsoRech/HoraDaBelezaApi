@@ -79,4 +79,12 @@ public class AppointmentRepository : IAppointmentRepository
             "UPDATE Appointments SET Status=@Status,UpdatedAt=@UpdatedAt WHERE Id=@Id",
             new { Id = id, Status = (int)status, UpdatedAt = DateTime.UtcNow });
     }
+
+    public async Task<IEnumerable<Appointment>> GetByUserIdAsync(int userId)
+    {
+        using var conn = _db.CreateConnection();
+        return await conn.QueryAsync<Appointment>(
+            "SELECT * FROM Appointments WHERE ClientId=@UserId ORDER BY ScheduledAt DESC",
+            new { UserId = userId });
+    }
 }

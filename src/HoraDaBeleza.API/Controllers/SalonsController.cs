@@ -97,7 +97,7 @@ public class SalonsController : ApiController
     [AllowAnonymous]
     [ProducesResponseType(typeof(IEnumerable<SalonDto>), 200)]
     public async Task<IActionResult> GetPopular()
-        => Ok(await _mediator.Send(new ListPopularSalonsQuery()));
+        => Ok(await _mediator.Send(new ListPopularSalonsQuery(UserId)));
 
     /// <summary>Get salon services by IDs (public)</summary>
     /// <param name="serviceIds">Comma-separated service IDs</param>

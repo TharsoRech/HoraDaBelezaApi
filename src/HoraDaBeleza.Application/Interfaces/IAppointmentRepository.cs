@@ -12,4 +12,5 @@ public interface IAppointmentRepository
     Task<bool> HasConflictAsync(int professionalId, DateTime scheduledAt, int durationMinutes, int? ignoreId = null);
     Task<int> CreateAsync(Appointment appointment);
     Task UpdateStatusAsync(int id, AppointmentStatus status);
+    Task<IEnumerable<Appointment>> GetByUserIdAsync(int userId);
 }

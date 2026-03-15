@@ -8,4 +8,5 @@ public interface IReviewRepository
     Task<IEnumerable<Review>> ListByProfessionalAsync(int professionalId);
     Task<bool> ReviewExistsForAppointmentAsync(int appointmentId);
     Task<int> CreateAsync(Review review);
+    Task<IEnumerable<Review>> GetReviewsAsync(int salonId);
 }

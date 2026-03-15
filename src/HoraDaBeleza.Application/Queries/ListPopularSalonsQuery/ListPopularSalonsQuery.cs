@@ -3,4 +3,4 @@ using MediatR;
 
 namespace HoraDaBeleza.Application.Queries.ListPopularSalonsQuery;
 
-public record ListPopularSalonsQuery : IRequest<IEnumerable<SalonDto>>;
+public record ListPopularSalonsQuery(int? UserId) : IRequest<IEnumerable<SalonDto>>;

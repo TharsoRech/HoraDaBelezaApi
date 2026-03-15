@@ -46,4 +46,15 @@ public class ReviewRepository : IReviewRepository
             WHERE Id=@ProfessionalId;";
         return await conn.QuerySingleAsync<int>(sql, review);
     }
+
+    public async Task<IEnumerable<Review>> GetReviewsAsync(int salonId)
+    {
+        using var conn = _db.CreateConnection();
+        var sql = @"
+            SELECT r.*, u.Name AS UserName, u.Base64Image AS UserPhoto
+            FROM Reviews r
+            INNER JOIN Users u ON u.Id = r.ClientId
+            WHERE r.SalonId = @SalonId";
+        return await conn.QueryAsync<Review>(sql, new { SalonId = salonId });
+    }
 }

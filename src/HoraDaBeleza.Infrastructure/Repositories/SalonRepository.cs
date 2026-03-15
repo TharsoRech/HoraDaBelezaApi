@@ -67,7 +67,7 @@ public class SalonRepository : ISalonRepository
     {
         using var conn = _db.CreateConnection();
         return await conn.QueryAsync<Salon>(
-            "SELECT * FROM Salons WHERE Active=1 ORDER BY AverageRating DESC");
+            "SELECT * FROM Salons WHERE Active=1 ORDER BY ISNULL(AverageRating, 0) DESC");
     }
 
     public async Task<IEnumerable<Domain.Entities.Service>> GetServicesByIdsAsync(List<int> serviceIds)

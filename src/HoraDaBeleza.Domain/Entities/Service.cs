@@ -11,4 +11,7 @@ public class Service
     public int DurationMinutes { get; set; }
     public bool Active { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
+    // Campos adicionais do banco de dados
+    public string? Icon { get; set; }
 }
